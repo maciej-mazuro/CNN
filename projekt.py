@@ -97,3 +97,54 @@ def strata_modelu(y_prawdziwy, y_predykcja):
 	c_strata = K.sum(K.square(c_prawdziwy - c_predykcja))
 
 	return s_strata + c_strata
+
+
+# stworzenie kodera
+def stworzenie_kodera(rozmiar_wejściowy):
+	wejście_S = Input(shape=(rozmiar_wejściowy))
+	wejście_C = Input(shape=(rozmiar_wejściowy))
+
+	# siec przygotowująca
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_prep0_3x3')(input_S)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_prep0_4x4')(input_S)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_prep0_5x5')(input_S)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_prep1_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_prep1_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_prep1_5x5')(x)
+	x = concatenate([x3, x4, x5])
+
+	x = concatenate([wejście_C, x])
+
+	# siec ukrywająca
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_hid0_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_hid0_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_hid0_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_hid1_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_hid1_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_hid1_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_hid2_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_hid2_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_hid2_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_hid3_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_hid3_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_hid3_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_hid4_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_hid4_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_hid5_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	wyjściowy_C_zmod = Conv2D(3, (3, 3), strides = (1, 1), padding='same', activation='selu', name='wyjściowy_C')(x)
+
+	return Model(wejścia=[wejście_S, wejście_C],
+				 wyjścia=wyjściowy_C_zmod,
+				 nazwa = 'dekoder')
