@@ -147,4 +147,50 @@ def stworzenie_kodera(rozmiar_wejściowy):
 
 	return Model(wejścia=[wejście_S, wejście_C],
 				 wyjścia=wyjściowy_C_zmod,
-				 nazwa = 'dekoder')
+				 nazwa = 'koder')
+
+def stworzenie_dekodera(rozmiar_wejściowy, stała=False)
+
+	# siec ekstrakcyjna
+	wejscie_ekstrakcja = Input(rozmiar=(rozmiar_wejściowy))
+
+	# dodanie szumu gausowskiego
+	zaszumione_wejscie = GaussianNoise(0.01, nazwa='zaszumiona_okładka')(wejscie_ekstrakcja)
+
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_rev0_3x3')(zaszumione_wejscie)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_rev0_4x4')(zaszumione_wejscie)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_rev0_5x5')(zaszumione_wejscie)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_rev1_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_rev1_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_rev1_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_rev2_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_rev2_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_rev2_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_rev3_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_rev3_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_rev3_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	x3 = Conv2D(50, (3, 3), strides = (1, 1), padding='same', activation='selu', name='conv_rev4_3x3')(x)
+	x4 = Conv2D(10, (4, 4), strides = (1, 1), padding='same', activation='selu', name='conv_rev4_4x4')(x)
+	x5 = Conv2D(5, (5, 5), strides = (1, 1), padding='same', activation='selu', name='conv_rev5_5x5')(x)
+	x = concatenate([x3, x4, x5])
+    
+	wyjściowy_S_zmod = Conv2D(3, (3, 3), strides = (1, 1), padding='same', activation='selu', name='wyjście_S')(x)
+
+	if not stała:
+		return Model(wejścia=wejscie_ekstrakcja,
+					 wyjścia=wyjściowy_S_zmod,
+					 nazwa = 'Dekoder')
+	else:
+		return Siec(wejścia=wejscie_ekstrakcja,
+					wyjścia=wyjściowy_S_zmod,
+					nazwa = 'Naprawiony dekoder')
+
+# cały model
