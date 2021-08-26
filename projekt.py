@@ -6,7 +6,7 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.preprocessing.image import load_img
 #import keras.backend as K
 
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 import numpy as np
 import os
@@ -58,3 +58,23 @@ X_testowe = X_testowe_oryginał/255.
 print("Liczba przykładów treningowych = " + str(X_treningowe.shape[0]))
 print("Liczba przykładów testowych = " + str(X_treningowe.shape[0]))
 print("Wymiary zbioru treningowego: " + str(X_treningowe.shape))
+
+# podział zbioru danych - połowa użyta jest jako ukrywane obrazki
+# druga połowa jako obrazy okładki
+
+# S : ukrywany obraz(ang. secret image)
+tajny_obraz = X_treningowe[0:X_treningowe.shape[0] // 2]
+
+# C : obraz okładki(ang. cover image)
+okładka = X_treningowe[X_treningowe.shape[0] // 2:]
+
+# wyświetlenie obrazów ze zbioru treningowego
+zestawienie=plt.figure(figsize=(8, 8))
+kolumny = 4
+rzędy = 5
+for i in range(1, kolumny*rzędy +1):
+	# losowe obrazki
+	indeks_obrazu = np.random.choice(X_treningowe.shape[0])
+	zestawienie.add_subplot(rzędy, kolumny, i)
+	plt.imshow(X_treningowe[indeks_obrazu])
+plt.show()
