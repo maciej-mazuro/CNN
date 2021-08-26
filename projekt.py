@@ -2,8 +2,8 @@ import os
 
 # Wskazanie ścieżki do zbiorów danych zawierający obrazy
 zbiór_danych = "./tiny-imagenet-200"
-zbiór_treningowy = os.path.join(zbiór_danych, "treningowe")	# zbiór danych treningowych
-zbiór_testowy = os.path.join(zbiór_danych, "testowe") # zbiór danych testowych
+zbiór_treningowy = os.path.join(zbiór_danych, "train")	# zbiór danych treningowych
+zbiór_testowy = os.path.join(zbiór_danych, "test") # zbiór danych testowych
 
 rozmiar_obrazów = (64, 64) # określenie rozmiaru pojedyńczego obrazka
 
