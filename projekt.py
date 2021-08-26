@@ -4,7 +4,7 @@
 #from keras.models import Model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.preprocessing.image import load_img
-#import keras.backend as K
+import tensorflow.keras.backend as K
 
 import matplotlib.pyplot as plt
 
@@ -78,3 +78,22 @@ for i in range(1, kolumny*rzędy +1):
 	zestawienie.add_subplot(rzędy, kolumny, i)
 	plt.imshow(X_treningowe[indeks_obrazu])
 plt.show()
+
+import wandb
+beta = 1.0
+
+# funkcja straty sieci neuronowej zajmującej się ekstrakcją
+def strata_ekstrakcji(s_prawdziwy, s_predykcja):
+	# wzór na stratę
+	return beta * K.sum(K.square(s_prawdziwy - s_predykcja))
+
+# funkcja straty dla całego modelu
+def strata_modelu(y_prawdziwy, y_predykcja):
+	# wzór na stratę
+	s_prawdziwy, c_prawdziwy = y_prawdziwy[...,0:3], y_prawdziwy[...,3:6]
+	s_predykcja, c_predykcja = y_predykcja[...,0:3], y_predykcja[...,3:6]
+
+	s_strata = rev_loss(s_prawdziwy, s_predykcja)
+	c_strata = K.sum(K.square(c_prawdziwy - c_predykcja))
+
+	return s_strata + c_strata
