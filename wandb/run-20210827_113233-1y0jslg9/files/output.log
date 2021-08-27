@@ -1,0 +1,3 @@
+Create sweep with ID: 2bostrmd
+Sweep URL: https://wandb.ai/maciej-mazuro/uncategorized/sweeps/2bostrmd
+wandb: WARNING Calling wandb.login() after wandb.init() has no effect.

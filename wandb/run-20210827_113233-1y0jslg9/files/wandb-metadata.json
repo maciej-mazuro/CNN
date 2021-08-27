@@ -1,0 +1,22 @@
+{
+    "os": "Windows-10-10.0.18363-SP0",
+    "python": "3.9.5",
+    "heartbeatAt": "2021-08-27T09:32:38.936594",
+    "startedAt": "2021-08-27T09:32:33.897239",
+    "docker": null,
+    "cpu_count": 4,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "C:\\Users\\ADMIN\\projects\\CNN\\projekt.py",
+    "codePath": "projekt.py",
+    "git": {
+        "remote": "https://github.com/maciej-mazuro/CNN.git",
+        "commit": "fe594c606bb13865b85abda7cfbad280504417c1"
+    },
+    "email": "maciej.mazuro@student.wat.edu.pl",
+    "root": "C:/Users/ADMIN/projects/CNN",
+    "host": "DESKTOP-A81FHN6",
+    "username": "ADMIN",
+    "executable": "C:\\Users\\ADMIN\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+}
