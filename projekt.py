@@ -194,3 +194,48 @@ def stworzenie_dekodera(rozmiar_wejściowy, stała=False):
 					nazwa = 'Naprawiony dekoder')
 
 # cały model
+def stworzenie_modelu(rozmiar_wejściowy):
+	wejście_S = Input(shape=(rozmiar_wejściowy))
+	wejście_C= Input(shape=(rozmiar_wejściowy))
+
+	koder = stworzenie_kodera(rozmiar_wejściowy)
+
+	dekoder = stworzenie_dekodera(rozmiar_wejściowy)
+	dekoder.compile(optimizer='adam', loss=rev_loss)
+	dekoder.trainable = False
+
+	wyjściowy_C_zmod = koder([wejście_S, wejście_C])
+	wyjściowy_S_zmod = dekoder(wyjściowy_C_zmod)
+
+	autokoder = Model(wejścia=[wejście_S, wejście_C],
+					  wyjścia=concatenate([wyjściowy_S_zmod, wyjściowy_C_zmod]))
+	autokoder.compile(optimizer='adam',loss=full_loss)
+
+	return koder, dekoder, autokoder
+
+def współczynnik_uczenia(epoki):
+	if epoki < 200:
+		return 0.001
+	elif epoki < 300:
+		return 0.0003
+
+import wandb
+wandb.init(project='steganografia', entity='maciej-mazuro')
+sweep_config = {
+	'method': 'random',
+	'metric': {
+	  'name': 'rev_loss',
+	  'goal': 'minimize'
+	},
+	'parameters': {
+
+		'lr':{
+			'values':[0.001]
+		},
+		'activation':{
+			'values':['relu']
+		}
+	}
+}
+
+sweep_id = wandb.sweep(sweep_config)
