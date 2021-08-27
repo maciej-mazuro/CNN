@@ -5,7 +5,7 @@
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.preprocessing.image import load_img
 import tensorflow.keras.backend as K
-
+from PIL import Image # zaimportowanie modułu potrzebnego na laptopie
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -149,7 +149,7 @@ def stworzenie_kodera(rozmiar_wejściowy):
 				 wyjścia=wyjściowy_C_zmod,
 				 nazwa = 'koder')
 
-def stworzenie_dekodera(rozmiar_wejściowy, stała=False)
+def stworzenie_dekodera(rozmiar_wejściowy, stała=False):
 
 	# siec ekstrakcyjna
 	wejscie_ekstrakcja = Input(rozmiar=(rozmiar_wejściowy))
