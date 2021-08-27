@@ -239,3 +239,54 @@ sweep_config = {
 }
 
 sweep_id = wandb.sweep(sweep_config)
+
+def trening(e,wu)
+
+	wandb.init(project='steganografia_tf',name='selu'+str(wu)+str(e))
+	print(wandb.config)
+	NB_EPOKI = e
+	ROZMIAR_BATCHU = 32
+	model_kodera, model_ekstrakcji, model_autokodera = stwórz_model(wejście_S.shape[1:])
+	K.set_value(model_autokodera.optimizer.lr,lr)
+	K.set_value(model_ekstrakcji.optimizer.lr,lr)
+	m = wejście_S.shape[0]
+	historia_strat = []
+	for epoki in range(NB_EPOKI):
+		np.random.shuffle(wejście_S)
+		np.random.shuffle(wejście_C)
+		t = tqdm(range(0, wejście_S.shape[0], ROZMIAR_BATCHU), mininterwał=0)
+
+		strata_ae = []
+		strata_rev = []
+		obrazy_okładki = []
+		obrazy_ukrywane = []
+		ukrywane_zakodowane = []
+		ukrywane_odkodowane = []
+		różnica_ss = []
+		róznica_cc = []
+		for indeks in t:
+
+			batch_s = wejście_S[indeks:min(indeks+ROZMIAR_BATCHU, m)]
+			batch_c = wejście_C[indeks:min(indeks+ROZMIAR_BATCHU, m)]
+
+			zmodyfikowany_c = model_kodera.predict([batch_s, batch_c])
+			strata_ae = model_autokodera.train_on_batch(x=[batch_s, batch_c],
+														y=np.concatenate((batch_s, batch_c), axis=3))
+
+			strata_ae.append(strataae)
+
+			strata_rev = model_ekstrakcji.train_on_batch(x=zmodyfikowany_c,
+														 y=batch_s)
+			strata_rev.append(stratarev)
+			wandb.log({"strata_ae":strataae})
+
+
+			t.set_description('Epoka {} | Batch: {:3} of {}. Strata AE {:10.2f} | Strata Rev {:10.2f}'.format(epoki + 1, indeks, m, np.mean(strata_ae), np.mean(strata_rev)))
+
+		średnia_strata_ae = np.mean(strata_ae)
+		wandb.log({"średnia_strata_ae":średnia_strata_ae})
+
+		historia_strat.append(średnia_strata_ae)
+		print(len(historia_strat))
+		if (epoki+1)%40==0:
+			
