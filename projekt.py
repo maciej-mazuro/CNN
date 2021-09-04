@@ -289,4 +289,27 @@ def trening(e,wu)
 		historia_strat.append(średnia_strata_ae)
 		print(len(historia_strat))
 		if (epoki+1)%40==0:
+			zakodowane = model_autokodera.predict([wejście_S, wejście_C])
+			zakodowane_S, zakodowane_C = zakodowane[...,0:3], zakodowane[...,3:6]
+			# uzyskanie wartości całkowitych
+			różnica_S, różnica_C = np.abs(zakodowane_S - wejście_S), np.abs(zakodowane_C - wejście_C)
+			# wyświetlenie obrazów w skali szarości
+			POKAŻ_SZARY = False
+			# wyświetlenie różnicy
+			POKAŻ_RÓŻNICE = True
+			# określenie wzmocnienia ?? 
+			WZMOCNIENIE = 1
+			# liczba par - ukryty i okładka
+			n = 6
+
+			def rgb2gray(rgb):
+				return np.dot(rgb[...,:3],[0.299, 0.587, 0.114])
+
+			def pokaz_obraz(obraz, rzędy, kolumny, indeks, szary=False, pierwszy_rząd=False, tytuł=brak):
+				ax = plt.subplot(rzędy, kolumny, indeks)
+				if szary:
+					plt.imshow(rgb2gray(obraz), cmap = plt.get_cmap('szary'))
+				else:
+					plt.imshow(obraz)
+					
 			
